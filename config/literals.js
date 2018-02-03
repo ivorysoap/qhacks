@@ -34,7 +34,7 @@ const fieldNames = {
         CODE: 'discountCode',
         REDEEMED: 'redeemed',
         TYPE: 'discountType',
-        AMOUNT: 'discountType'
+        AMOUNT: 'discountAmount'
     }
 };
 
