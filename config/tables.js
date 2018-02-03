@@ -17,9 +17,6 @@ const tables = {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false
             },
-            "discountCodeGiven": {
-                type: Sequelize.STRING(5)
-            },
             "purchaseMade": {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false
@@ -29,6 +26,7 @@ const tables = {
             let thisModel = models['Customers'];
             thisModel.hasOne(models['Demographics'], {as: 'demographic', foreignKey: 'customerId'});
             thisModel.hasOne(models['Visits'], {as: 'visit', foreignKey: 'customerId'});
+            thisModel.hasOne(models['Discounts'], {as: 'discount', foreignKey: 'customerId'})
         }
     },
     "2": {
@@ -41,14 +39,18 @@ const tables = {
             },
             "gender": {
                 type: Sequelize.ENUM,
-                values: ["Male", "Female", "Unidentified"]
+                values: ["male", "female"]
             },
             "age": {
                 type: Sequelize.MEDIUMINT
             },
             "ethnicity": {
                 type: Sequelize.ENUM,
-                values: ['White', 'Black', 'Asian']
+                values: ['white', 'black', 'asian']
+            },
+            "emotion": {
+                type: Sequelize.ENUM,
+                values: ['happy', 'sad']
             }
         }
     },
@@ -64,14 +66,12 @@ const tables = {
                 type: Sequelize.DATE,
                 defaultValue: Sequelize.NOW
             },
-            amountSpent: {
+            'amountSpent': {
                 type: Sequelize.FLOAT
             }
         },
         associations: (models) => {
             let thisModel = models['Visits'];
-            thisModel.hasMany(models['Products'], {as: 'purchases', foreignKey: 'visitId'});
-            thisModel.hasOne(models['Discounts'], {as: 'discount', foreignKey: 'visitId'});
             thisModel.belongsToMany(models['Products'], {as: 'products', through: 'Purchases'});
         }
     },
@@ -114,6 +114,10 @@ const tables = {
                 type: Sequelize.FLOAT
             }
         }
+    },
+    associations: (models) => {
+        let thisModel = models['Discounts'];
+        thisModel.belongsTo(models['Customers'], {as: 'customer'});
     }
 };
 
