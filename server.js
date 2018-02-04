@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 const demographic = 'f783f0807c52474c8c6ad20c8cf45fc0';
 const subscriptionKey = '4c824752ecbd402a9c24458473473dd1';
 
+
 const app = express();
 
 const cam = WebCam.create({
@@ -23,7 +24,7 @@ const cam = WebCam.create({
     delay: 0,
     saveShots: true,
     output: "jpeg",
-    device: false,
+    device: '2',
     callbackReturn: "location",
     verbose: false
 });
@@ -51,9 +52,9 @@ app.post('/redeem-discount', (request, response) => {
 
 app.post('/startCollecting', (request, response) => {
     collectCustomerDemographics().then(result => {
-        return dbm.recordCustomer(organize(result), true);
+        return dbm.recordCustomer(organize(result[0], result[1]), true);
     }).then(discount => {
-        response.send(discount.discountCode);
+        response.send(discount);
     });
 });
 
@@ -65,7 +66,7 @@ app.listen(PORT, err => {
 function collectCustomerDemographics() {
     return new Promise((resolve, reject) => {
         let results = [];
-        cam.capture("C:\\Users\\astra\\Workspace\\qhacks\\images\\image" + Date.now() + ".jpg", (err, data) => {
+        cam.capture("./images/image" + Date.now() + ".jpg", (err, data) => {
             console.log(err);
             analyzeWithAzure(data).then(result => {
                 results.push(result);
@@ -191,7 +192,3 @@ function organize(azobj, clarObj) {
     results['ethnicity'] = ethnicity;
     return results;
 }
-
-collectCustomerDemographics().then(results => {
-    console.log(organize(results[0], results[1]));
-});

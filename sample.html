@@ -48,7 +48,7 @@
         var controller = Leap.loop({enableGestures: true}, function (frame) {
             //... handle frame data
         });
-
+        var handled = false;
         controller.on("gesture", function (swipe) {
             var img = new Image;
             var x = 0;
@@ -67,18 +67,30 @@
                     $("#animate").css("display", "none");
                 });
             });
-
-            $.ajax({
-                url: '/startCollecting',
-                type: 'post',
-                success: function (data, textStatus, jQxhr) {
-                    var canvas = document.getElementById("myCanvas");
-                    var ctx = canvas.getContext("2d");
-                    ctx.font = "80px Arial";
-                    ctx.fillStyle = "red";
-                    ctx.fillText(data,40,120);
-                }
-            });
+            if (!handled) {
+                handled = true;
+                $.ajax({
+                    url: '/startCollecting',
+                    type: 'post',
+                    success: function (data, textStatus, jQxhr) {
+                        var type;
+                        if (data.discountType === "PercentageOff")
+                            type = "%";
+                        else
+                            type = " dollars";
+                        let resultString = data.discountCode + "";
+                        var canvas = document.getElementById("myCanvas");
+                        var ctx = canvas.getContext("2d");
+                        ctx.font = "80px Arial";
+                        ctx.fillStyle = "red";
+                        ctx.fillText(resultString,40,120);
+                        var ctx2 = canvas.getContext("2d");
+                        ctx2.font = "50px Arial";
+                        ctx2.fillStyle = "green";
+                        ctx2.fillText(data.discountAmount + "" + type + " Off Your Next Purchase!!!", 40, 180);
+                    }
+                });
+            }
 
             for (var i = 0; i < 100; i++) {
                 //  var id = setInterval(frame, 5);
@@ -327,7 +339,7 @@
 
         //var c=document.getElementById("myCanvas");
 
-
+        var happened = false;
         function sendMessage() {
             //  var message = document.getElementById('msgBox').value;
             ws.send(message);
@@ -345,7 +357,7 @@
 
 </head>
 <body onload="checkLibrary()">
-<h1>Roots Boots: Get 10% off your next purchase!</h1>
+<h1>Roots Boots: Get Discounts On your next purchase!</h1>
 
 <!-- <div id="main">
 <button id="pause" onclick="togglePause()">Pause</button>
