@@ -8,11 +8,18 @@
   },
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "browserify": "^15.2.0",
     "browserify-shim": "^3.8.14",
+    "clarifai": "^2.6.0",
+    "express": "^4.16.2",
+    "fs": "0.0.1-security",
     "leapjs": "^0.6.4",
     "mysql2": "^1.5.1",
+    "node-webcam": "^0.4.3",
+    "querystring": "^0.2.0",
     "randomstring": "^1.1.5",
+    "request": "^2.83.0",
     "sequelize": "^4.32.3",
     "underscore": "^1.8.3"
   }

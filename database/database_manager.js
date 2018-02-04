@@ -30,9 +30,8 @@ class DatabaseManager {
         })
     }
 
-    applyDiscount(discountObj, originalPrice, purchasedProducts) {
+    applyDiscount(discountCode, originalPrice, purchasedProducts) {
         return new Promise((resolve, reject) => {
-            let discountCode = discountObj.discountCode;
             this.models_[lit.tables.DISCOUNTS].findById(discountCode).then(discount => {
                 let discountAmount;
                 if (discount.get(lit.fields.DISCOUNT.TYPE) === 'PercentageOff') {
@@ -51,7 +50,7 @@ class DatabaseManager {
                         {where: {name: {[Op.in]: purchasedProducts}}}).then(products => {
                             return visit.addProducts(products);
                     });
-                })
+                }).then(resolve).catch(reject);
             })
         })
     }

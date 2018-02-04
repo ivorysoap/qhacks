@@ -36,7 +36,16 @@ module.exports = function () {
 
 function loadMockData(dbm) {
     let models = dbm.models_;
-    return loadMockDataProductList(models['Products']);
+    return loadMockDataProductList(models['Products']).then(() => {
+        let dbm = new DatabaseManager();
+        return dbm.recordCustomer({age: 20, ethnicity: 'asian', gender: 'male', emotion: 'happy'}, true).then(discount => {
+            return dbm.applyDiscount(discount.discountCode, 300, ['shoes1', 'shoes2']);
+        }).then(() => {
+            return dbm.recordCustomer({age: 50, ethnicity: 'white', gender: 'female', emotion: 'sad'}, true);
+        }).then(discount => {
+            return dbm.applyDiscount(discount.discountCode, 400, ['shoes1', 'shoes2', 'sweater1']);
+        });
+    })
 }
 
 function loadMockDataProductList(model) {

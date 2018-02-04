@@ -45,12 +45,10 @@ const tables = {
                 type: Sequelize.MEDIUMINT
             },
             "ethnicity": {
-                type: Sequelize.ENUM,
-                values: ['white', 'black', 'asian']
+                type: Sequelize.STRING
             },
             "emotion": {
-                type: Sequelize.ENUM,
-                values: ['happy', 'sad']
+                type: Sequelize.STRING
             }
         }
     },
