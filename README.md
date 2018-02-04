@@ -4,9 +4,12 @@ Interactive ads with which persons walking by stores can engage, building a clea
 
 Created using the Microsoft Azure and Clairifai APIs as a project for QHacks 2018.
 
-___Creators___
+__Creators__
 
 Alex Trostanovsky
+
 Astral Cai
+
 Ivor Benderavage
+
 Sammy Diamantstein
